@@ -81,11 +81,13 @@ def evaluation(message):
         print(fSpace)
         if fSpace != -1:
             param = str(message.text[fSpace+1:]).split(" ")
+            rate = param[0]
+            bakeryNumber = param[1]
             lenTable = list(sql.execute("select id from rating"))
-            if  len(param) != 2 or int(param[0]) > 5 or int(param[0]) <= 0 or int(param[1]) > len(lenTable):
+            if  len(param) != 2 or int(rate) > 5 or int(rate) <= 0 or int(bakeryNumber) > len(lenTable):
                 bot.send_message(message.from_user.id, "Поставте оценку от 1 до 5. Или проверьте имеется ли булочка с таким номером.")
             else:
-                sql.execute(f"update rating set Count=Count+1, Summ=Summ+{ round(float(param[0]),1) } where id ={ int(param[1]) }")
+                sql.execute(f"update rating set Count=Count+1, Summ=Summ+{ round(float(rate),1) } where id ={ int(bakeryNumber) }")
                 db.commit()
                 bot.send_message(message.from_user.id, "Принято")
         else:
